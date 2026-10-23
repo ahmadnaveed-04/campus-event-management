@@ -278,7 +278,24 @@
       color: var(--muted);
       font-size: 13px;
     }
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 10px;
+  padding: 12px;
+  background: white;
+  color: #17201c;
+  z-index: 1000;
+}
 
+.skip-link:focus {
+  left: 10px;
+}
+
+:focus-visible {
+  outline: 3px solid #22644a;
+  outline-offset: 3px;
+}
     @media (max-width: 760px) {
       .nav-links a:not(.nav-button) {
         display: none;
@@ -306,6 +323,7 @@
 </head>
 
 <body>
+    <a class="skip-link" href="#main-content">Skip to events</a>
   <div class="wrap">
     <nav>
       <a class="brand" href="#">campus<span>.</span></a>
@@ -316,7 +334,7 @@
       </div>
     </nav>
 
-    <main>
+    <main id="main-content">
       <section class="hero" id="about">
         <div>
           <div class="eyebrow">Your campus, your community</div>
