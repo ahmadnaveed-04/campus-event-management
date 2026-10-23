@@ -260,7 +260,39 @@
       color: #56615a;
       font-size: 12px;
     }
+.register form {
+  display: grid;
+  gap: 14px;
+  max-width: 520px;
+}
 
+.register label {
+  display: grid;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.register input,
+.register select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d5dcd2;
+  border-radius: 9px;
+  background: white;
+  font: inherit;
+}
+
+.register button {
+  width: max-content;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+#form-message {
+  min-height: 20px;
+}
     .register {
       margin: 0 0 70px;
       padding: 32px;
@@ -419,7 +451,29 @@
       <section class="register" id="register">
         <div class="eyebrow">Come along</div>
         <h2>Your next campus memory starts here.</h2>
-        <p>Choose an event above and ask the team to register you.</p>
+        <p><form id="registration-form">
+  <label>
+    Your name
+    <input name="name" type="text" required>
+  </label>
+
+  <label>
+    Your email
+    <input name="email" type="email" required>
+  </label>
+
+  <label>
+    Choose an event
+    <select name="event_id" required>
+      <option value="">Select an event</option>
+      <option value="1">AI Workshop</option>
+      <option value="2">Campus Sports Day</option>
+    </select>
+  </label>
+
+  <button class="nav-button" type="submit">Register</button>
+  <p id="form-message" role="status"></p>
+</form></p>
       </section>
     </main>
 
@@ -427,5 +481,75 @@
       Campus Events · Made for our university community
     </footer>
   </div>
+  <script>
+  const searchBox = document.querySelector(".search");
+  const filterButtons = document.querySelectorAll(".filter");
+  const eventCards = document.querySelectorAll(".event");
+
+  function filterEvents() {
+    const searchText = searchBox.value.toLowerCase().trim();
+    const activeButton = document.querySelector(".filter.active");
+    const selectedCategory = activeButton.textContent.trim().toUpperCase();
+
+    eventCards.forEach(card => {
+      const cardText = card.textContent.toLowerCase();
+      const cardCategory = card.querySelector(".tag").textContent.trim().toUpperCase();
+
+      const matchesSearch = cardText.includes(searchText);
+      const matchesCategory =
+        selectedCategory === "ALL EVENTS" ||
+        selectedCategory === cardCategory;
+
+      card.hidden = !(matchesSearch && matchesCategory);
+    });
+  }
+
+  searchBox.addEventListener("input", filterEvents);
+
+  filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      filterButtons.forEach(item => item.classList.remove("active"));
+      button.classList.add("active");
+      filterEvents();
+    });
+  });
+  const registrationForm = document.querySelector("#registration-form");
+
+registrationForm.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const formData = new FormData(registrationForm);
+  const message = document.querySelector("#form-message");
+
+  const registration = {
+    name: formData.get("name").trim(),
+    email: formData.get("email").trim(),
+    event_id: Number(formData.get("event_id"))
+  };
+
+  try {
+    const response = await fetch("http://localhost:5000/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(registration)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Registration failed.");
+    }
+
+    message.textContent = result.message || "Registration successful!";
+    registrationForm.reset();
+  } catch (error) {
+    message.textContent =
+      "Could not contact the server. The backend must be running on port 5000.";
+  }
+});
+</script>
+
 </body>
 </html>

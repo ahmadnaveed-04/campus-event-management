@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | Campus</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f8f3;
+      color: #17201c;
+      font-family: Arial, sans-serif;
+    }
+
+    main {
+      width: min(1000px, calc(100% - 36px));
+      margin: 40px auto;
+    }
+
+    a { color: #22644a; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .card {
+      padding: 22px;
+      border: 1px solid #e5e9e1;
+      border-radius: 16px;
+      background: white;
+    }
+
+    .number {
+      margin: 8px 0;
+      color: #22644a;
+      font-size: 34px;
+      font-weight: bold;
+    }
+
+    .muted { color: #717a74; }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #e5e9e1;
+      border-radius: 14px;
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #e5e9e1;
+    }
+
+    th { color: #56615a; }
+
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <a href="index.html">← Back to events</a>
+    <h1>Student Dashboard</h1>
+    <p class="muted">A quick view of event registrations.</p>
+
+    <section class="stats">
+      <article class="card">
+        <div class="muted">Registrations shown</div>
+        <div class="number" id="registration-count">0</div>
+      </article>
+
+      <article class="card">
+        <div class="muted">Data source</div>
+        <div class="number" style="font-size: 20px">Campus Events API</div>
+      </article>
+    </section>
+
+    <h2>Recent registrations</h2>
+    <p id="message" class="muted">Loading registrations…</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Email</th>
+            <th>Event</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="registrations"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    async function loadRegistrations() {
+      const message = document.querySelector("#message");
+      const tableBody = document.querySelector("#registrations");
+
+      try {
+        const response = await fetch("http://localhost:5000/api/registrations");
+        if (!response.ok) throw new Error("Could not load registrations.");
+
+        const registrations = await response.json();
+        document.querySelector("#registration-count").textContent = registrations.length;
+
+        tableBody.innerHTML = registrations.map(item => `
+          <tr>
+            <td>${escapeHtml(item.name)}</td>
+            <td>${escapeHtml(item.email)}</td>
+            <td>${escapeHtml(item.event_title || item.event_id)}</td>
+            <td>${escapeHtml(item.registration_date)}</td>
+          </tr>
+        `).join("");
+
+        message.textContent = registrations.length
+          ? "Registration data loaded."
+          : "There are no registrations yet.";
+      } catch (error) {
+        message.textContent =
+          "Could not contact the server. The backend must be running on port 5000.";
+      }
+    }
+
+    loadRegistrations();
+  </script>
+</body>
+</html>

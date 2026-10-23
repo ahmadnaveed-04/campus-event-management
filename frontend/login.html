@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login | Campus</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #f7f8f3;
+      color: #17201c;
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      width: min(420px, calc(100% - 40px));
+      padding: 30px;
+      border: 1px solid #e5e9e1;
+      border-radius: 20px;
+      background: white;
+      box-shadow: 0 16px 40px #17201c12;
+    }
+
+    a { color: #22644a; }
+
+    h1 { margin-bottom: 8px; }
+
+    p { color: #717a74; line-height: 1.6; }
+
+    label {
+      display: grid;
+      gap: 7px;
+      margin: 16px 0;
+      font-weight: bold;
+    }
+
+    input {
+      padding: 13px;
+      border: 1px solid #d5dcd2;
+      border-radius: 9px;
+      font: inherit;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: 0;
+      border-radius: 24px;
+      background: #22644a;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #message { min-height: 24px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <a href="index.html">← Back to events</a>
+    <h1>Welcome back</h1>
+    <p>Log in with your student account to continue.</p>
+
+    <form id="login-form">
+      <label>
+        Email
+        <input name="email" type="email" required autocomplete="email">
+      </label>
+
+      <label>
+        Password
+        <input name="password" type="password" required autocomplete="current-password">
+      </label>
+
+      <button type="submit">Log in</button>
+    </form>
+
+    <p id="message" role="status"></p>
+  </main>
+
+  <script>
+    const loginForm = document.querySelector("#login-form");
+    const message = document.querySelector("#message");
+
+    loginForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      const formData = new FormData(loginForm);
+
+      try {
+        const response = await fetch("http://localhost:5000/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: formData.get("email").trim(),
+            password: formData.get("password")
+          })
+        });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Login failed.");
+
+        message.textContent = result.message || "Login successful.";
+      } catch (error) {
+        message.textContent =
+          "Could not contact the server. The backend must be running on port 5000.";
+      }
+    });
+  </script>
+</body>
+</html>
