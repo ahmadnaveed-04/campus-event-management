@@ -1,4 +1,6 @@
 node_modules/
 backend/database/*.db
 backend/database/*.sqlite
-.env
+.envbackend/campus_events.db
+
+backend/campus_events.db
