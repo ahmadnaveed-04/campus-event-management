@@ -1,0 +1,8 @@
+{
+  "installCommand": "npm install --prefix backend",
+  "functions": {
+    "api/[...route].js": {
+      "includeFiles": "backend/**"
+    }
+  }
+}

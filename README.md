@@ -1,6 +1,6 @@
 # Campus Event Management System
 
-A student team project for browsing campus events and registering for them. The project has a responsive HTML/CSS/JavaScript frontend and a Node.js/Express API backed by SQLite.
+A student team project for browsing campus events and registering for them. It has a responsive HTML/CSS/JavaScript frontend, a Node.js/Express API, and a Neon PostgreSQL database for deployment.
 
 ## Features
 
@@ -9,14 +9,14 @@ A student team project for browsing campus events and registering for them. The 
 - Register a student for an event.
 - Create an account and log in through the API.
 - View recent registrations on the student dashboard.
-- Store users, events, and registrations in SQLite.
+- Store users, events, and registrations in PostgreSQL.
 
 ## Project structure
 
 ```text
 campus-event-management/
 ├── backend/
-│   ├── server.js       # Express API and SQLite initialization
+│   ├── server.js       # Express API and PostgreSQL initialization
 │   ├── package.json    # Backend dependencies
 │   └── DATABASE.md     # Database schema and API verification guide
 ├── documentation/     # Additional project documents
@@ -27,6 +27,8 @@ campus-event-management/
 │   ├── dashboard.html
 │   └── README.md
 ├── screenshots/       # Project demo images
+├── api/               # Vercel serverless API entry point
+├── vercel.json        # Vercel deployment configuration
 └── README.md
 ```
 
@@ -45,30 +47,36 @@ campus-event-management/
    npm install
    ```
 
-3. Start the API server:
+3. Create a Neon database, copy its connection string, and put it in `backend/.env`:
+
+   ```text
+   DATABASE_URL=your-Neon-connection-string
+   ```
+
+   Start the API server:
 
    ```powershell
    node server.js
    ```
 
-   Keep this terminal open. The API runs at `http://localhost:5000` and creates `backend/campus_events.db` automatically with sample events on first run.
+   Keep this terminal open. The API runs at `http://localhost:5000` and creates its tables and sample events on first request.
 
 4. Open `frontend/index.html` in a browser. In Chrome, press `Ctrl+O` and choose the file, or open it from File Explorer.
 5. To see saved registrations, open `frontend/dashboard.html` in the browser while the backend is running.
 
-When opened directly from disk, the frontend calls the local API at `http://localhost:5000`. When served by Express (including the hosted deployment), it uses the same site's API routes.
+When opened directly from disk, the frontend calls the local API at `http://localhost:5000`. When hosted, it uses the same site's API routes.
 
-## Deploy on Render
+## Deploy on Vercel with Neon
 
-The repository includes a `render.yaml` Blueprint for deploying the frontend and Express API together as one web service.
+The repository includes a Vercel serverless API entry point. The static frontend and API are deployed together; Neon stores registrations and accounts in PostgreSQL.
 
-1. Push the project changes to the GitHub repository's `main` branch.
-2. Sign in to Render and choose **New → Blueprint**.
-3. Connect `ahmadnaveed-04/campus-event-management` and let Render read `render.yaml`.
-4. Create the service and wait for the deploy to finish.
-5. Open the `onrender.com` URL shown in the Render dashboard. The home page is `/`, the dashboard is `/dashboard.html`, and the API health check is `/api/health`.
+1. Create a free Neon project and copy its pooled connection string. Keep it private.
+2. Push the project to GitHub, then import `ahmadnaveed-04/campus-event-management` into Vercel.
+3. Keep the project root as the root directory. The included `vercel.json` installs the backend dependencies and configures the API function.
+4. In Vercel project settings, add the environment variable `DATABASE_URL` with the Neon connection string, for **Production**, **Preview**, and **Development**.
+5. Deploy. Open the Vercel URL; `/` is the home page, `/dashboard.html` is the dashboard, and `/api/health` checks the API and database.
 
-The free Render service is suitable for a classroom demo. It can sleep after inactivity and its filesystem is temporary, so the SQLite database and registrations can reset after a restart, sleep, or redeploy. Use persistent database storage for data that must be kept.
+The free plans and signup requirements can change. Use only the Free/Hobby options and do not upgrade to a paid plan. Never commit `backend/.env` or share the database connection string.
 
 ## API overview
 

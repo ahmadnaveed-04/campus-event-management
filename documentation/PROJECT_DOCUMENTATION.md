@@ -2,7 +2,7 @@
 
 ## 1. Project overview
 
-Campus Event Management System is a university project that lets students browse campus events, search and filter them, view event details, and register. The project uses a static HTML/CSS/JavaScript frontend, a Node.js/Express API, and an SQLite database.
+Campus Event Management System is a university project that lets students browse campus events, search and filter them, view event details, and register. The project uses a static HTML/CSS/JavaScript frontend, a Node.js/Express API, and a PostgreSQL database hosted on Neon for deployment.
 
 ## 2. Features
 
@@ -12,7 +12,7 @@ Campus Event Management System is a university project that lets students browse
 - Student registration form connected to the API
 - Login page connected to the login API
 - Dashboard showing recent registrations
-- SQLite storage for events, student accounts, and registrations
+- PostgreSQL storage for events, student accounts, and registrations
 
 ## 3. Project screenshots
 
@@ -94,7 +94,7 @@ Screenshots shared during the mini-project work are saved in the repository's `s
 
 - Frontend: HTML, CSS, JavaScript
 - Backend: Node.js and Express
-- Database: SQLite (`sqlite3`)
+- Database: PostgreSQL (Neon)
 - Password hashing: `bcryptjs`
 - Cross-origin requests: `cors`
 - Collaboration: Git and GitHub
@@ -107,6 +107,8 @@ campus-event-management/
 │   ├── server.js
 │   ├── package.json
 │   └── DATABASE.md
+├── api/
+│   └── [...route].js
 ├── documentation/
 │   └── PROJECT_DOCUMENTATION.md
 ├── frontend/
@@ -115,10 +117,11 @@ campus-event-management/
 │   ├── login.html
 │   └── dashboard.html
 ├── screenshots/
+├── vercel.json
 └── README.md
 ```
 
-`backend/server.js` starts the Express server, creates the SQLite tables if needed, and inserts sample events when the events table is empty. The database file is created locally as `backend/campus_events.db` and is ignored by Git.
+`backend/server.js` starts the Express API, creates the PostgreSQL tables if needed, and inserts sample events when the events table is empty. The Neon connection string is supplied through the private `DATABASE_URL` environment variable.
 
 ## 6. Requirements
 
@@ -136,7 +139,7 @@ campus-event-management/
    npm install
    ```
 
-3. Start the backend server:
+3. Create a Neon database, copy its connection string to `backend/.env` as `DATABASE_URL=...`, then start the backend server:
 
    ```powershell
    node server.js
@@ -148,18 +151,17 @@ campus-event-management/
 
 The frontend pages use `http://localhost:5000` for API requests. Registration, login, and dashboard data need the backend server to be running.
 
-## 8. Deploy the project on Render
+## 8. Deploy the project on Vercel with Neon
 
-The repository's `render.yaml` configures one Render web service to serve both the frontend pages and Express API.
+The repository includes `vercel.json` and an API function entry point so the static pages and Express API can be deployed from the GitHub repository. Neon PostgreSQL provides persistent hosted data storage.
 
-1. Push the project files to the GitHub repository's `main` branch.
-2. Sign in to Render and choose **New → Blueprint**.
-3. Connect the `ahmadnaveed-04/campus-event-management` GitHub repository. Render reads the deployment settings from `render.yaml`.
-4. Create the service and wait until Render reports that the deploy is live.
-5. Open the provided `onrender.com` address. The homepage is `/`, dashboard is `/dashboard.html`, and health check is `/api/health`.
-6. Verify events at `/api/events`, submit a registration from the homepage, and check the dashboard.
+1. Create a Neon project and copy its pooled connection string.
+2. Import `ahmadnaveed-04/campus-event-management` into Vercel and keep the repository root as the project root.
+3. Add `DATABASE_URL` to Vercel environment variables for Production, Preview, and Development.
+4. Deploy and open the Vercel URL. The homepage is `/`, dashboard is `/dashboard.html`, and `/api/health` checks the API and database.
+5. Verify events at `/api/events`, submit a registration from the homepage, and check the dashboard.
 
-Render's free web service may sleep after inactivity and uses an ephemeral filesystem. Since this project stores data in a local SQLite file, registrations can disappear after sleep, a restart, or a redeploy. This setup is for a demo; use persistent storage or a managed database if the data must be retained.
+Choose free plans only and do not publish the database connection string. Free plan details and account signup requirements can change.
 
 ## 9. API reference
 
@@ -255,7 +257,7 @@ The result should include the student's name, email, event ID, registration date
 2. Open the homepage and show the event list, search, and category filter.
 3. Open event details and submit a registration.
 4. Open the dashboard and show the saved registration.
-5. Explain that the API stores the event and registration data in SQLite.
+5. Explain that the API stores the event and registration data in PostgreSQL.
 
 ## 13. Team responsibilities
 
@@ -272,4 +274,4 @@ The result should include the student's name, email, event ID, registration date
 - Event capacity is stored, but the current registration route does not enforce a capacity limit.
 - The login route verifies credentials but does not issue a login token or maintain a server-side session.
 - The frontend selects the local API when opened from disk and same-origin API routes when hosted through Express.
-- Render's free service uses temporary local storage, so the SQLite database is not durable there.
+- Vercel API routes use serverless functions, and Neon PostgreSQL stores persistent application data.

@@ -1,6 +1,10 @@
 node_modules/
+.env
+backend/.env
+backend/campus_events.db
+backend/campus_events.db-journal
+backend/campus_events.db-wal
+backend/campus_events.db-shm
 backend/database/*.db
 backend/database/*.sqlite
-.envbackend/campus_events.db
-
-backend/campus_events.db
+.vercel/
