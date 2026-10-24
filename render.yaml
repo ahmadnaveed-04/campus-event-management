@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: campus-event-management
+    runtime: node
+    plan: free
+    buildCommand: npm install --prefix backend
+    startCommand: npm start --prefix backend
+    healthCheckPath: /api/health

@@ -514,6 +514,7 @@
     });
   });
   const registrationForm = document.querySelector("#registration-form");
+const API_BASE = window.location.protocol === "file:" ? "http://localhost:5000" : "";
 
 registrationForm.addEventListener("submit", async event => {
   event.preventDefault();
@@ -528,7 +529,7 @@ registrationForm.addEventListener("submit", async event => {
   };
 
   try {
-    const response = await fetch("http://localhost:5000/api/register", {
+    const response = await fetch(`${API_BASE}/api/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

@@ -1,14 +1,26 @@
 # Frontend
 
-This folder contains the Campus Events website.
+The frontend is a set of standalone HTML pages using HTML, CSS, and JavaScript.
 
-## Files
+## Pages
 
-- `index.html` contains the page structure and styles.
-- The page includes a navigation bar, featured event, event cards, and a registration section.
+- `index.html` — campus homepage, event search/category filter, and event registration form.
+- `event-details.html` — event details page.
+- `login.html` — student login form connected to the login API.
+- `dashboard.html` — recent registrations loaded from the API.
 
-## Open the page
+## Run the frontend locally
 
-Open `index.html` in a web browser.
+1. Start the backend first. From the repository root, run:
 
-The sample events are currently written in the page. The team will connect them to the backend API during integration.
+   ```powershell
+   cd backend
+   npm install
+   node server.js
+   ```
+
+2. Keep the terminal running the server open.
+3. Open `index.html` in a browser. Use `Ctrl+O` in Chrome to select the file if needed.
+4. Open `dashboard.html` the same way to view saved registrations.
+
+The pages call the backend at `http://localhost:5000`. If the backend is stopped, API-backed registration, login, and dashboard features cannot load.
