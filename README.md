@@ -110,3 +110,96 @@ Request fields and database tables are documented in [backend/DATABASE.md](backe
 4. Open the dashboard and show the saved registration.
 
 See `frontend/README.md` for frontend file details and `backend/DATABASE.md` for the schema and manual API verification steps.
+
+
+## Screenshots
+
+### Website
+
+![Home page](screenshots/home-page.png)
+
+![Event listing](screenshots/event-listing.png)
+
+![Search result](screenshots/search-result.png)
+
+![Event details](screenshots/event-details.png)
+
+![Login page](screenshots/login-page.png)
+
+![Registration form](screenshots/registration-form.png)
+
+![Registration successful](screenshots/registration-successful.png)
+
+### Running the project
+
+![npm install](screenshots/npm-install.png)
+
+![Server running](screenshots/server-running.png)
+
+![Events API](screenshots/api-events.png)
+
+### API testing (Postman)
+
+![Postman collection](screenshots/postman-collection.png)
+
+![Postman GET](screenshots/postman-get-event-200.png)
+
+![Postman POST](screenshots/postman-post-event-201.png)
+
+![Postman PUT](screenshots/postman-put-event-200.png)
+
+![Postman DELETE](screenshots/postman-delete-event-200.png)
+
+![Postman register](screenshots/postman-register-201.png)
+
+![Postman duplicate registration](screenshots/postman-duplicate-409.png)
+
+![Postman registrations](screenshots/postman-get-registrations-200.png)
+
+### Deployment (AWS EC2)
+
+![EC2 instance running](screenshots/deploy-01-ec2-instance-running.png)
+
+![Clone on server](screenshots/deploy-02-clone-repo-on-server.png)
+
+![npm install on server](screenshots/deploy-03-npm-install-on-server.png)
+
+![systemd service](screenshots/deploy-04-systemd-service.png)
+
+![Nginx config](screenshots/deploy-05-nginx-config.png)
+
+![Service active](screenshots/deploy-06-service-active-health-ok.png)
+
+![Live website](screenshots/deploy-07-live-website-on-ec2.png)
+
+![Live registration](screenshots/deploy-08-live-registration-successful.png)
+
+### Team collaboration on GitHub
+
+![Repository front page](screenshots/github-repo.png)
+
+![Contributors](screenshots/github-contributors.png)
+
+![Labels](screenshots/github-labels.png)
+
+![Issues list](screenshots/github-issues-list.png)
+
+![Issue 4](screenshots/github-issue-4-frontend.png)
+
+![Issue 6](screenshots/github-issue-6-backend.png)
+
+![Issue 8](screenshots/github-issue-8-database.png)
+
+![Merged Pull Requests](screenshots/github-pull-requests-merged-list.png)
+
+![PR 1](screenshots/github-pr-1-frontend-ui.png)
+
+![PR 5](screenshots/github-pr-5-frontend-functionality.png)
+
+![PR 7](screenshots/github-pr-7-backend-api.png)
+
+![PR 9 request review](screenshots/github-pr-9-request-review.png)
+
+![PR 9 approved and merged](screenshots/github-pr-9-approved-merged.png)
+
+![PR 10 screenshots added](screenshots/github-pr-10-add-screenshots-merged.png)
