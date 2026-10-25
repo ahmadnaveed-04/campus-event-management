@@ -203,3 +203,10 @@ See `frontend/README.md` for frontend file details and `backend/DATABASE.md` for
 ![PR 9 approved and merged](screenshots/github-pr-9-approved-merged.png)
 
 ![PR 10 screenshots added](screenshots/github-pr-10-add-screenshots-merged.png)
+![Sign-up page](screenshots/signup-page.png)
+
+![Branches](screenshots/github-branches.png)
+
+![Commit history](screenshots/github-commits.png)
+
+![PR 10 screenshots added](screenshots/github-pr-10-add-screenshots-merged.png)
